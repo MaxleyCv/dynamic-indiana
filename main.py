@@ -1,11 +1,16 @@
-from utils.calculations import *
-from utils.access import get_inputs
+import algorithm.calculations as dynamic
+import utils.task_io as io
+from collections import defaultdict
+import utils.utils as utils
 
 if __name__ == '__main__':
-    M, N = get_inputs()
-    get_number_of_ways(matrix[0][-1])
-    if M != 1:
-        get_number_of_ways(matrix[-1][-1])
-        print(vertex_ways.get((0, N - 1)) + vertex_ways.get((M - 1, N - 1)))
+    corridor = []
+    tag_coordinates = defaultdict(list)
+    row_count, column_count = io.get_inputs(tag_coordinates, corridor, utils.INPUT_FILE)
+    # if row count is greater than 0 there is definitely a right top cell
+    dynamic.get_number_of_ways(corridor[0][-1], tag_coordinates, corridor)
+    if row_count != 1:
+        dynamic.get_number_of_ways(corridor[-1][-1], tag_coordinates, corridor)
+        io.write_result(utils.OUTPUT_FILE, corridor[0][-1].paths_count + corridor[-1][-1].paths_count)
     else:
-        print(vertex_ways[(0, N - 1)])
+        io.write_result(utils.OUTPUT_FILE, corridor[0][-1].paths_count)
