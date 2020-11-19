@@ -1,5 +1,6 @@
-from utils.vertex import Vertex
+from vertex.vertex import Vertex
 from contextlib import closing
+from collections import defaultdict
 
 
 def get_inputs(tag_coordinates, map_of_vertexes, input_file_path):
@@ -9,6 +10,8 @@ def get_inputs(tag_coordinates, map_of_vertexes, input_file_path):
     :parameter map_of_vertexes: list of rows of vertexes
     :parameter input_file_path: way to input file
     :return: count of rows and count of columns
+    >>> get_inputs(defaultdict(list), [], "io/test1.in")
+    (2, 2)
     """
     with closing(open(input_file_path, "r")) as input_file:
         input_data = input_file.readlines()
@@ -35,6 +38,9 @@ def write_result(output_file_path: str, result):
     Function to write a result to file
     :param output_file_path: path to an output file
     :param result: value to write
+    >>> write_result("../io/test1.out", 5)
+    >>> open("../io/test1.out", 'r').read()
+    '5'
     """
     with closing(open(output_file_path, "w")) as output_file:
         output_file.write(str(result))
