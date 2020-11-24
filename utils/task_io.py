@@ -1,32 +1,34 @@
 from vertex.vertex import Vertex
 from contextlib import closing
 from collections import defaultdict
+from copy import copy
 
 
-def get_inputs(tag_coordinates, map_of_vertexes, input_file_path):
+def get_inputs(input_file_path, map_of_vertexes):
     """
     Function to read statement from a file
     :parameter tag_coordinates: defaultdict containing symbol-(list of coordinates with this symbol)
-    :parameter map_of_vertexes: list of rows of vertexes
+    :parameter map_of_vertexes: list of rows_count of vertexes
     :parameter input_file_path: way to input file
-    :return: count of rows and count of columns
+    :parameter dict_of_tagpaths: a dictionary that corresponds tag and appearance of tag in a column
+    :return: count of rows_count and count of columns_count
     >>> get_inputs(defaultdict(list), [], "io/test1.in")
     (2, 2)
     """
     with closing(open(input_file_path, "r")) as input_file:
         input_data = input_file.readlines()
-    (column_count, row_count) = tuple(map(int, input_data.pop(0).rstrip('\n').split(' ')))
+    column_count, row_count = map(int, input_data.pop(0).rstrip('\n').split(' '))
     # taking a new row of steps, we should use an index instead of taking each element because we need a coordinate
     for row_index in range(row_count):
         row = []
         # adding each symbol-vertex to the map_of_vertexes of vertexes
         for symbol in input_data.pop(0).rstrip('\n'):
+            paths_count = 0
             # only when the vertex is in the first column, we can start from it
-            paths_count = None
             if len(row) == 0:
                 paths_count = 1
-            new_vertex = Vertex(row_index, len(row), symbol, paths_count)
-            tag_coordinates[symbol].append(new_vertex.coordinate)
+            # initialize vertex object here
+            new_vertex = Vertex(symbol, paths_count)
             row.append(new_vertex)
         map_of_vertexes.append(row)
 
